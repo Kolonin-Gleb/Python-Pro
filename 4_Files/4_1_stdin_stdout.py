@@ -28,16 +28,13 @@ print(*data, sep='\n')
 '''
 
 # step 11 Разница между датами
-''''''
-
-# step 12 
 '''
 # Будер работать как эхо
 for line in sys.stdin:
     print(line.strip('\n'))
 '''
 
-# step 13 Лемма о трёх носках
+# step 12 Лемма о трёх носках
 '''
 import sys
 
@@ -68,6 +65,44 @@ else: # Нечётный ход - Дима последний
     print('Дима' if data[-1] % 2 == 0 else 'Анри')
 '''
 
-# step 
-''''''
+# step 13 Урок статистики
+'''
+import sys
+
+heights = [int(x) for x in sys.stdin]
+
+if heights:
+    print(f"Рост самого низкого ученика: {min(heights)}")
+    print(f"Рост самого высокого ученика: {max(heights)}")
+    print(f"Средний рост: {sum(heights) / len(heights)}")
+else:
+    print("нет учеников")
+'''
+
+# step 14 Комментатор
+'''
+import sys
+
+lines = [line for line in sys.stdin]
+clear_comments = 0
+
+for line in lines:
+    for letter in line:
+        if letter == ' ': continue
+        elif letter == '#':
+            clear_comments += 1
+        else:
+            break
+
+print(clear_comments)
+'''
+
+# step 15 Без комментариев
+# Почему-то не проходит
+'''
+import sys
+code = [line for line in sys.stdin if line.find('#') == -1]
+print(*code, sep='', end='')
+print()
+'''
 
