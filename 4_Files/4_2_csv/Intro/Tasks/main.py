@@ -47,8 +47,6 @@ with open('deniro.csv', encoding='utf-8') as file:
         print(*row, sep=',')
 '''
 
-
-
 # упорядочивает компании по возрастанию средней зарплаты ее сотрудников и выводит их названия,
 # каждое на отдельной строке.
 # Если две компании имеют одинаковые средние зарплаты,
@@ -68,7 +66,6 @@ with open('deniro.csv', encoding='utf-8') as file:
 - Да. Я смогу отсортировать по ЗП и алфавиту исп. специальную lambda
 
 Средняя зарплата компании = суммы всех зарплат / их количество.
-'''
 
 import csv
 analysis_d = {}
@@ -98,4 +95,28 @@ for company in analysis_d.keys():
 res = sorted(analysis_d.items(), key=lambda x: (x[1], x[0]))
 for company in res:
     print(company[0])
+
+'''
+
+# step 16 csv_columns
+''''''
+
+def csv_columns(filename: str):
+    res_d = {}
+    with open(filename, encoding='utf-8') as file:
+        data = file.read()
+        table = [r.split(',') for r in data.splitlines()]
+        columns = table[0]
+        del table[0] # Удаляю заголовки
+        # Добавляю в словарь ключи - названия столбцов и заготовки для их значений
+        for col in columns:
+            res_d.setdefault(col, [])
+        
+        for row in table: # Построчное чтение таблицы
+            for ind, key in enumerate(res_d):
+                res_d[key].append(row[ind])
+    return res_d
+
+
+print(csv_columns('exam.csv'))
 
