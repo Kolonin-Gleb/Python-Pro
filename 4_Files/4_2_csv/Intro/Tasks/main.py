@@ -99,7 +99,7 @@ for company in res:
 '''
 
 # step 16 csv_columns
-''''''
+'''
 
 def csv_columns(filename: str):
     res_d = {}
@@ -117,6 +117,78 @@ def csv_columns(filename: str):
                 res_d[key].append(row[ind])
     return res_d
 
-
 print(csv_columns('exam.csv'))
+'''
+
+# step 15
+# Возрастание классов
+'''
+План действий.
+
+1 столбец нужно перенести без изменений
+
+Здесь необходимо провести сортировку столбцов, т.е. расставить их в нужном порядке.
+
+Нужно прочитать столбцы в словари, где:
+ключ - номер класса
+значение - список значений в столбце
+
+Затем произвести сортировку по ключам словаря 
+И реализовать постолбчатую запись в файл
+'''
+
+import numpy as np
+import csv
+
+with open('student_counts.csv', mode='r', encoding='utf-8') as file:
+    data = file.read()
+    table = [r.split(',') for r in data.splitlines()]
+
+    table = np.array(table)
+    table = table.T # Столбцы в виде строк
+
+    # Забираю столбец years
+    years_col = list(table[0])
+    table = np.delete(table, 0, axis=0)
+
+    res_d = {}
+    # Превращаю таблицу в словарь
+    for col in table:
+        header = col[0].split('-')
+        header = int(header[0]), header[1]
+        res_d.setdefault(header, col[1:]) # key: (5, 'Б'), values: кол-ва учеников в этом классе
+
+    # Сортировка словаря по ключам-кортежам (числу и букве)
+    sorted_tuples = sorted(res_d.items())
+    res_d = dict(sorted_tuples)
+
+    # Новый словарь с ключами-заголовками в виде соответствующему отображаемому
+    res_d2 = {years_col[0]: years_col[1:]} # Возращаю столбец years в словарь для дальнейшей записи
+
+    for header in res_d.keys():
+        new_header = '-'.join((str(header[0]), header[1]))
+        res_d2.setdefault(str(new_header), res_d[header])
+
+    # print(res_d2)
+    # Остаётся осуществить запись
+    # dictWriter может быть полезен!
+
+with open('sorted_student_counts.csv', mode='w', encoding='utf-8') as file_csv:
+    writer = csv.DictWriter(file_csv, fieldnames=[list(res_d2.keys())]) # названия всех столбцов
+
+    # RES_D2 - должен быть списком словарей!
+    res_d3 = []
+    for item in res_d2.items():
+        item = list(item)
+        res_d3.append({str(item[0]): list(item[1])})
+
+    print(res_d3)
+    # writer.writeheader() # Записываю заголовки (названия всех столбцов)
+    writer.writerows(res_d3)
+
+
+# Напишите программу, которая записывает данную таблицу в файл sorted_student_counts.csv, 
+# располагая все столбцы в порядке возрастания классов,
+# при совпадении классов — в порядке возрастания букв.
+
 
