@@ -28,10 +28,13 @@ print(*data, sep='\n')
 '''
 
 # step 11 Разница между датами
-'''
 # Будер работать как эхо
-for line in sys.stdin:
-    print(line.strip('\n'))
+'''
+import sys
+from datetime import datetime
+
+dates = [datetime.fromisoformat(line.strip('\n')).date() for line in sys.stdin]
+print(max(dates).toordinal() - min(dates).toordinal())
 '''
 
 # step 12 Лемма о трёх носках
@@ -101,8 +104,78 @@ print(clear_comments)
 # Почему-то не проходит
 '''
 import sys
-code = [line for line in sys.stdin if line.find('#') == -1]
-print(*code, sep='', end='')
-print()
+code = [line for line in sys.stdin if line.strip().find('#') != 0]
+print(*code, sep='')
 '''
+
+# step 16 Панорамное агенство
+'''
+
+import sys
+
+news = [line.strip() for line in sys.stdin]
+category = news.pop(-1) # Забираю последнюю запись как категорию из списка новостей
+# Новости выбранной категории
+category_news = [line for line in news if line.find(category) != -1]
+# Разбиение записи
+category_news = [line.split(' / ') for line in category_news]
+# Сортировка новостей по достоверности и алфавиту
+category_news.sort(key= lambda lst: (float(lst[2]), lst[0]))
+
+for new in category_news:
+    print(new[0])
+'''
+
+# step 17 Это точно Python?
+'''
+import sys
+from datetime import datetime
+dates = [datetime.strptime(line.strip('\n'), "%d.%m.%Y") for line in sys.stdin]
+
+# Если имеется 2 одинаковые даты то это сразу MIX. Т.к. порядок должен быть жёстким
+unique_dates = set(dates)
+if len(unique_dates) != len(dates):
+    print("MIX")
+elif dates == sorted(dates): # по возрастанию
+    print("ASC")
+elif dates == sorted(dates, reverse=True): # по убыванию
+    print("DESC")
+else:
+    print("MIX")
+'''
+
+# step 18 Гуру прогрессий
+'''
+import sys
+
+def is_arithmetic(l):
+    delta = l[1] - l[0]
+    for index in range(len(l) - 1):
+        if not (l[index + 1] - l[index] == delta):
+             return False
+    return True
+
+def is_geometric(li):
+    if len(li) <= 1:
+        return True
+    # Calculate ratio
+    ratio = li[1]/float(li[0])
+    # Check the ratio of the remaining
+    for i in range(1, len(li)):
+        if li[i]/float(li[i-1]) != ratio: 
+            return False
+    return True 
+
+nums = [int(num) for num in sys.stdin]
+
+if is_arithmetic(nums):
+    print("Арифметическая прогрессия")
+elif is_geometric(nums):
+    print("Геометрическая прогрессия")
+else:
+    print("Не прогрессия")
+'''
+
+# 
+''''''
 
