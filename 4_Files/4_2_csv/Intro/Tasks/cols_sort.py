@@ -2,6 +2,7 @@
 # Возрастание классов
 
 import numpy as np
+import pandas as pd
 
 with open('student_counts.csv', mode='r', encoding='utf-8') as file:
     data = file.read()
@@ -24,42 +25,21 @@ with open('student_counts.csv', mode='r', encoding='utf-8') as file:
 
     # Сортировка столбцов по названию их столбцов (числу и букве)
     table2.sort(key=lambda lst: (lst[0], lst[1]))
-    # print(table2)
 
-    table3 = np.array(table2)
-    table3 = table3.T
-
-    # Добавляю по оси столбец с годами
-
-    # Приведение 2 эл. каждого столбца в строку формата '1-А', явл. заголовком
-    # 1 эл. послужит для информации о годе, что при последующем транспонировании позволит записать данные в нужном виде
-    '''
-    for row, year in zip(table2, years_col):
-        print(row)
-        print(year)
-        row[1] = '-'.join((str(row[0]), row[1]))
-        row[0] = year
-
-    # TODO: Несколько (11) классов не получили данные! Нарушаются размерности!
-    '''
-
+    # Восстановление оригинальных заголовков формат '1-А'
     for row in table2:
         row[1] = '-'.join((str(row[0]), row[1]))
-    
-    print(len(table2))
-    print(len(years_col))
-    # for row in table2:
-    #     row
-        
+        del row[0]
 
-    print(table2)
+    # Возврат данных о годах
+    table2.insert(0, years_col)
 
-    # table3 = np.array(table2)
-    # table3 = table3.T
-    # print(table3)
-
-    # Остаётся сохранить NumPy в CSV
-    # np.savetxt('sorted_student_counts.csv', table3, delimiter=",")
+    # Итоговый вид
+    table3 = np.array(table2)
+    table3 = table3.T
+    # Сохранение NumPy массива в DataFrame с последующей записью в файл
+    DF = pd.DataFrame(table3)
+    DF.to_csv("sorted_student_counts.csv", index=False, header=None)
 
 
 # Напишите программу, которая записывает данную таблицу в файл sorted_student_counts.csv, 
