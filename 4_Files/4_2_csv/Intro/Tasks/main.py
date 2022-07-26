@@ -180,11 +180,13 @@ with open('sorted_student_counts.csv', mode='w', encoding='utf-8') as file_csv:
     res_d3 = []
     for item in res_d2.items():
         item = list(item)
-        res_d3.append({str(item[0]): list(item[1])})
+        res_d3.append({str(item[0]): str(list(item[1]))})
 
     print(res_d3)
-    # writer.writeheader() # Записываю заголовки (названия всех столбцов)
+    writer.writeheader() # Записываю заголовки (названия всех столбцов)
     writer.writerows(res_d3)
+    # МОЙ ВЫВОД: Работать с словарями и модулем csv не удобно!
+    # Лучше обрабатывать, как обычный CSV файл!
 
 
 # Напишите программу, которая записывает данную таблицу в файл sorted_student_counts.csv, 
