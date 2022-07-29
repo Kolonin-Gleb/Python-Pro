@@ -178,30 +178,67 @@ print(best_sender(messages, senders))
 Функция должна возвращать новый словарь (тип defaultdict с типом list в качестве значения по умолчанию),
 который представляет собой «перевернутый» словарь dict_of_lists.
 
-План:
-Нужно собрать все значения из полученного словаря в список. -> Они потом будут использоваться в качестве ключей
-Каждый ключ (из знач) получает в качестве значения список из всех предыдущих ключей + свой)
-
+'''
 
 '''
+Пояснение:
+{'a': [1, 2], 'b': [3, 1], 'c': [2]}
+все уникальные элементы списков (1, 2, 3) становятся ключами:
+
+{1: ..., 2: ..., 3: ...}
+а в качестве значений они получают список ключей исходного словаря, в списках которых они присутствовали:
+
+{1: ['a', 'b'], 2: ['a', 'c'], 3: ['b']}
+То есть единица присутствовала в списке по ключу a и b, двойка присутствовала в списке по ключу a и c, и так далее
+'''
+
+'''
+Мой план:
+1) Собираю список из уникальных значений входного словаря. Это ключи словаря-ответа
+2) Создаю answer_d с ключами - эл. списка и знач. по умолч - списками.
+Иду по ключам answer_d
+    Перебераю все item входного словаря.
+        Если answer_d.key in item.values
+        Добавляю в answer_d[key] ключ входного словаря (через append)
 
 from collections import defaultdict
 
 def flip_dict(dict_of_lists: dict) -> defaultdict:
-    answer = defaultdict(list)
-    
-    return answer
+    # Ключи словаря-ответа с сохранённым порядком
+    answer_keys = []
+    for lst in dict_of_lists.values():
+        for el in lst:
+            if el not in answer_keys:
+                answer_keys.append(el)
 
+    # Формирую словарь-ответ
+    answer_d = defaultdict(list)
+    for ans_key in answer_keys:
+        for key, values in dict_of_lists.items():
+            if ans_key in values:
+                cnt = values.count(ans_key) # сколько раз присутствует этот ключ в значениях входного словаря
+                for _ in range(cnt):
+                    answer_d[ans_key].append(key)
 
-data = {'Arthur': ['cacao', 'tea', 'juice'], 'Timur': ['coffee', 'tea', 'juice'], 'Anri': ['juice', 'coffee']}
+    return answer_d
 
-# Вывод
-for key, values in flip_dict(data).items():
-    print(f'{key}: {", ".join(values)}')
+data = {1: ['a', 'b', 'c'], 2: ['a', 'b', 'c', 'c'], 3: ['c', 'd', 'a'], 4: ['a', 'b', 'r', 'f'], 5: ['y', 'u', 'e', 'w']}
 
+print(flip_dict(data))
 '''
-cacao: Arthur
-tea: Arthur, Timur
-juice: Arthur, Timur, Anri
-coffee: Timur, Anri
-'''
+
+# Элегантное решение
+''''''
+from collections import defaultdict
+
+def flip_dict(data):
+    fliped_data = defaultdict(list)
+    for key, values in data.items():
+        for value in values:
+            fliped_data[value].append(key)
+    return fliped_data
+
+data = {1: ['a', 'b', 'c'], 2: ['a', 'b', 'c', 'c'], 3: ['c', 'd', 'a'], 4: ['a', 'b', 'r', 'f'], 5: ['y', 'u', 'e', 'w']}
+
+print(flip_dict(data))
+
