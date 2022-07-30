@@ -233,5 +233,112 @@ for key, value in sorted(stats.items(), key=lambda x: x[1]):
 
 # Всё ещё достоин
 '''
+import sys
+
+student_mark = []
+
+for line in sys.stdin:
+    student_mark.append(line.strip().split())
+
+print(sorted(student_mark, key= lambda sm: int(sm[1]))[1][0])
+'''
+
+# 
+'''
+Вам доступна переменная data, содержащая Counter словарь. Дополните приведенный ниже код, чтобы он добавил этому словарю два атрибута:
+
+min_values() — функция, которая возвращает список элементов, имеющих наименьшее значение
+max_values() — функция, которая возвращает список элементов, имеющих наибольшее значение
+
+from collections import Counter
+
+data = Counter('aksjaskfjsklfjdslkfjajfopewtoieqpwdpqworiiqjskanvmcxbmpewrqopkqwlmdzczmxvmvlnjpjqpkqzxvmbowiqeorewi')
+
+# Добавление моих методов объекту data 
+data.__dict__['min_frequency'] = lambda: min(data.values())
+data.__dict__['max_frequency'] = lambda: max(data.values())
+
+data.__dict__['min_values'] = lambda: [item for item in data.most_common() if item[1] == data.min_frequency()] 
+data.__dict__['max_values'] = lambda: [item for item in data.most_common() if item[1] == data.max_frequency()] 
+
+print(data.max_values())
+print(data.min_values())
+'''
+
+# Более элегантное решение
+'''
+from collections import Counter
+
+data = Counter('aksjaskfjsklfjdslkfjajfopewtoieqpwdpqworiiqjskanvmcxbmpewrqopkqwlmdzczmxvmvlnjpjqpkqzxvmbowiqeorewi')
+
+data.min_values = lambda: [i for i in data.items() if i[1] == min(data.values())]
+data.max_values = lambda: [i for i in data.items() if i[1] == max(data.values())]
+'''
+
+# Here we go again
+# Аналитика файла csv
+'''
+from collections import Counter
+
+data = []
+
+with open(r'Intro\name_log.csv', 'r', encoding='utf-8') as file:
+    file.readline()
+    data = [line.strip().split(',') for line in file.readlines()]
+
+    email_frequency = Counter()
+
+    for line in data:
+        email_frequency[line[1]] += 1
+
+    for email, frequency in sorted(email_frequency.items()):
+        print(f"{email}: {frequency}")
+'''
+
+# Scrabble - можно ли составить слово
+'''
+from collections import Counter
+
+def scrabble(symbols: str, word: str):
+    symbols_frequency = Counter(symbols.lower())
+    word_symbols_frequency = Counter(word.lower())
+
+    if symbols_frequency >= word_symbols_frequency:
+        return True
+    return False
+
+
+print(scrabble('bbbbbeeeeegggggggeeeeeekkkkk', 'Beegeek'))
+# True
+print(scrabble('begk', 'beegeek'))
+# False
+print(scrabble('beegeek', 'beegeek'))
+# True
+'''
+
+# print_bar_chart
+'''
+from collections import Counter
+
+def print_bar_chart(data, mark):
+    counter = Counter(data)
+    # print(counter)
+    # Определяю число пробелов для форматированного вывода
+    max_length_elem = len(max(counter.keys(), key=len))
+
+    for el, frequency in counter.most_common():
+        if len(el) != max_length_elem:
+            el += ' ' * int(max_length_elem - len(el))
+
+        print(f"{el} |{mark * frequency}")
+
+# print_bar_chart('beegeek', '+')
+
+languages = ['java', 'java', 'python', 'C++', 'assembler', 'java', 'C++', 'C', 'pascal', 'C++', 'pascal', 'java']
+print_bar_chart(languages, '#')
+'''
+
+# 
+'''
 '''
 
