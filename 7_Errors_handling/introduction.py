@@ -125,6 +125,7 @@ print(data)
 # {'a': [1, 2, 3], 'b': [4, 5, 6, 7]}
 '''
 
+'''
 week = {
     1: "Понедельник",
     2: "Вторник",
@@ -136,10 +137,10 @@ week = {
 }
 
 def get_weekday(number: int):
-    if number < 1 or number > 7:
-        raise ValueError("Аргумент не принадлежит требуемому диапазону")
-    elif type(number) != int:
+    if type(number) != int:
         raise TypeError("Аргумент не является целым числом")
+    elif number < 1 or number > 7:
+        raise ValueError("Аргумент не принадлежит требуемому диапазону")
     else:
         return week[number]
     
@@ -159,3 +160,215 @@ except ValueError as err:
     print(type(err))
 # Аргумент не принадлежит требуемому диапазону
 # <class 'ValueError'>
+'''
+
+'''
+def get_id(names: list, name: str):
+    upper_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    lower_letters = 'abcdefghijklmnopqrstuvwxyz'
+
+    if type(name) != str:
+        raise TypeError('Имя не является строкой')
+    else: # Проверка на корректность
+        if name[0] in upper_letters:
+            for i in range(1, len(name)):
+                if name[i] not in lower_letters:
+                    raise ValueError('Имя не является корректным')
+        else:
+            raise ValueError('Имя не является корректным')
+
+    return len(names) + 1
+'''
+# Более элегантно
+'''
+def get_id(names, name):
+    if type(name) != str:
+        raise TypeError('Имя не является строкой')
+    if not (name[0].isupper() and name[1:].islower() and name.isalpha()):
+        raise ValueError('Имя не является корректным')
+    return len(names) + 1
+
+names = ['Timur', 'Anri', 'Dima']
+name = 'Arthur'
+
+print(get_id(names, name))
+# 4
+
+names = ['Timur', 'Anri', 'Dima', 'Arthur']
+name = 'Ruslan1337'
+try:
+    print(get_id(names, name))
+except ValueError as e:
+    print(e)
+# Имя не является корректным
+
+names = ['Timur', 'Anri', 'Dima', 'Arthur', 'Ruslan']
+name = ['E', 'd', 'u', 'a', 'r', 'd']
+
+try:
+    print(get_id(names, name))
+except TypeError as e:
+    print(e)
+# Имя не является строкой
+'''
+
+# Десериализация JSON
+'''
+import json
+
+try:
+    file = open(input(), 'r', encoding='utf-8')
+    try:
+        json_data = json.load(file)
+        print(json_data)
+    except:
+        print("Ошибка при десериализации")
+    finally:
+        file.close()
+except FileNotFoundError:
+    print("Файл не найден")
+'''
+
+'''
+import json
+
+try:
+    with open(input(), 'r', encoding='utf-8') as file:
+        print(json.load(file)) # Попытка напечатать результат десериализации
+        
+except ValueError:
+    print("Ошибка при десериализации")
+except FileNotFoundError:
+    print("Файл не найден")
+'''
+
+# Обработка исключений. Часть 5
+'''
+# Создание пользовательского исключения
+
+class NegativeAgeError(Exception):
+    pass
+
+# Использование пользовательского исключения
+try:
+    print('Введите свой возраст')
+    age = int(input())
+    if age < 0:
+        raise NegativeAgeError('Возраст не может быть отрицательным')
+    print('Ваш возраст равен', age)
+except ValueError:
+    print('Возраст должен быть числом')
+except NegativeAgeError as e:
+    print(e)
+'''
+# is_good_password()
+# в стиле LBYL
+'''
+def is_good_password(string: str):
+    if len(string) >= 9:
+        if string not in (string.upper(), string.lower()):
+            for letter in string:
+                if letter.isdigit():
+                    return True
+    return False
+
+print(is_good_password('41157082'))
+# False
+
+print(is_good_password('мойпарольсамыйлучший'))
+# False
+
+print(is_good_password('МойПарольСамыйЛучший111'))
+# True
+'''
+
+# is_good_password()
+# В стиле EAFP
+'''
+# Пользовательские ошибки
+class PasswordError(Exception):
+    pass
+
+class LengthError(PasswordError):
+    pass
+
+class LetterError(PasswordError):
+    pass
+
+class DigitError(PasswordError):
+    pass
+
+def is_good_password(string: str):
+    if len(string) < 9:
+        raise LengthError
+    elif string in (string.upper(), string.lower()):
+        raise LetterError
+    else:
+        for letter in string:
+            if letter.isdigit():
+                return True
+        raise DigitError
+
+
+try:
+    print(is_good_password('Short7'))
+except Exception as err:
+    print(type(err))
+# <class '__main__.LengthError'>
+
+print(is_good_password('еПQSНгиfУЙ70qE'))
+# True
+
+try:
+    print(is_good_password('41157081231232'))
+except Exception as err:
+    print(type(err))
+# <class '__main__.LetterError'>
+
+try:
+    print(is_good_password('4abcdABC8'))
+except Exception as err:
+    print(type(err))
+'''
+
+# Уж лучше матрицы 
+'''
+class PasswordError(Exception):
+    pass
+
+class LengthError(PasswordError):
+    pass
+
+class LetterError(PasswordError):
+    pass
+
+class DigitError(PasswordError):
+    pass
+
+def is_good_password(string: str):
+    try:
+        if len(string) < 9:
+            raise LengthError("LengthError")
+        elif string in (string.upper(), string.lower()):
+            raise LetterError("LetterError")
+        else:
+            for letter in string:
+                if letter.isdigit():
+                    return "Success!"
+            raise DigitError("DigitError")
+    except PasswordError as e:
+        print(e)
+
+while True:
+    if is_good_password(input()) == "Success!":
+        print("Success!")
+        break
+'''
+
+# Оператор assert
+'''
+file1 = 'city.jpeg'
+file2 = 'data.txt'
+
+assert file1.endswith('.jpeg') or file2.endswith('.jpeg')
+'''

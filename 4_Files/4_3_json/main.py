@@ -102,7 +102,6 @@ print(is_correct_json(data))
 '''
 # Я хочу обойтись без создания временного списка.
 # Сразу писать данные во 2 файл
-'''
 
 import json
 
@@ -132,3 +131,18 @@ with open('data.json', 'r', encoding='utf-8') as reading_file:
 
 with open('updated_data.json', 'w', encoding='utf-8') as writing_file:
     json.dump(lst, writing_file)
+'''
+
+'''
+import json
+import sys
+
+data = json.loads(sys.stdin.read())
+
+for key, value in data.items():
+    if type(value) != list:
+        print(f"{key}: {value}")
+    else:
+        print(f"{key}: {', '.join(map(str, value))}")
+'''
+
