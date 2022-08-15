@@ -3,10 +3,10 @@
 def hash_as_key(objects):
     d = {}
     for obj in objects:
-        if d.get(hash(obj)) != None:
-            d[hash(obj)] = [d[hash(obj)], obj]
-        else:
+        if d.get(hash(obj)) == None:
             d[hash(obj)] = obj
+        else:
+            d[hash(obj)] = [d[hash(obj)]] + [obj]
     return d
 
 data = [1, 2, 3, 4, 5, 5, 5]
