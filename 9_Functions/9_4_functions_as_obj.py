@@ -7,20 +7,22 @@ def numbers_sum(elems: list):
 """
 
 # Новый print
-# У меня нет идеи, как её реализовать
+# Сделал через декоратор
 '''
+def upper(func):
+    def wrapper(*args, sep=" ", end='\n'):
+        args = [str(arg).upper() if type(arg) == str else arg for arg in args]
+        return func(*args, sep=sep.upper(), end=end.upper())
+    return wrapper
 
-def PRINT(*rest, sep=' ', end='\n'):
-    rest = [el.upper() for el in rest]
-    print(*rest, sep=sep, end=end)
+old_print = print
+print = upper(print) # Переопределение функции
 
-print = PRINT
-
-words = ('black', 'white', 'grey', 'black-1', 'white-1', 'python')
+words = [['black', 'white', 'grey', 'black-1', 'white-1', 'python']]
 print(*words, sep=' to ', end=' LOVE')
+'''
 
 # BLACK TO WHITE TO GREY TO BLACK-1 TO WHITE-1 TO PYTHON LOVE
-'''
 
 # ПОЛЬЗОВАТЕЛЬСКИЕ АТТРИБУТЫ ФУНКЦИЙ
 '''
