@@ -102,7 +102,52 @@ def upper(func):
 print = upper(print) # Переопределение функции
 '''
 
-# Декоратор do_twice
+# Декоратор do_twice вызывающий декорируемую функцию два раза.
 '''
+def do_twice(func):
+    def wrapper(*args, **kwargs):
+        func(*args, **kwargs)
+        return func(*args, **kwargs)
+    return wrapper
+'''
+
+# Декоратор reverse_args
+'''
+def reverse_args(func):
+    def wrapper(*args, **kwargs):
+        args = args[::-1]
+        return func(*args, **kwargs)
+    return wrapper
+'''
+
+# Декоратор exception_decorator
+'''
+def exception_decorator(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return (func(*args, **kwargs), 'Функция выполнилась без ошибок')
+        except:
+            return ((None, 'При вызове функции произошла ошибка'))
+    return wrapper
+'''
+
+# Декоратор takes_positive
+'''
+def takes_positive(func):
+    def wrapper(*args, **kwargs):
+        for arg in args:
+            if type(arg) != int:
+                return TypeError
+            if arg <= 0:
+                return ValueError
+
+        for kwarg in kwargs.values():
+            if type(kwarg) != int:
+                return TypeError
+            if kwarg <= 0:
+                return ValueError
+
+        return func(*args, **kwargs)
+    return wrapper
 '''
 
