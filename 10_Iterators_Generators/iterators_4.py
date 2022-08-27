@@ -54,13 +54,87 @@ del numbers[1] # Удаление 4
 print(next(iterator)) # Вывод 5
 '''
 
-# 
+# С подвохом
 '''
-'''
-
 numbers = [1, 2, 3, 4, 5]
 
 for i in numbers:
     del numbers[0]
     print(i)
+'''
+
+# Итератор BoundedRepeater
+'''
+class BoundedRepeater:
+    def __init__(self, object, times: int):
+        self.object = object
+        self.times = times
+        self.cur = 0 # Вспомогательный счётчик
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.cur < self.times:
+            self.cur += 1
+            return self.object
+        else:
+            raise StopIteration
+'''
+
+# Итератор Square
+'''
+class Square:
+    def __init__(self, n: int):
+        self.sequence = [num**2 for num in range(1, n+1)]
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        try:
+            return self.sequence.pop(0)
+        except:
+            raise StopIteration
+'''
+
+# Итератор Fibonacci
+'''
+'''
+# Итератор класса Fibonacci должен генерировать бесконечную последовательность чисел Фибоначчи, начиная с 1.
+
+class Fibonacci:
+    def __init__(self):
+        self.el1 = 1
+        self.el2 = 1
+        self.called_times = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.called_times < 3:
+            self.called_times += 1
+            return self.el1
+        res = self.el1 + self.el2
+        self.el1 = self.el2
+        self.el2 = res
+        return res
+
+
+fibonacci = Fibonacci()
+
+print(next(fibonacci))
+# 1
+
+fibonacci = Fibonacci()
+
+print(next(fibonacci))
+print(next(fibonacci))
+print(next(fibonacci))
+print(next(fibonacci))
+# 1
+# 1
+# 2
+# 3
 
