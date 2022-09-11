@@ -160,12 +160,10 @@ print(*results, sep='\n')
 
 # Beegeek
 '''
-'''
-# Примечание 2. Строка может одновременно удовлетворять обеим условиям.
-
 import re
 import sys
 
+# Может подходить разная регулярка в зависимости от используемой функции (search/fullmatch)
 bee_str_pattern = r'.*bee.*bee.*'
 geek_str_pattern = r'\bgeek\b'
 
@@ -184,4 +182,118 @@ for line in map(str.rstrip, sys.stdin):
 
 print(stats["bee_str"])
 print(stats["geek_str"])
+'''
+
+# Popularity
+'''
+import re
+import sys
+
+# Может подходить разная регулярка в зависимости от используемой функции (search/fullmatch)
+pattern1 = r'^beegeek.*beegeek$|^beegeek$'
+pattern2 = r'^beegeek.*|.*beegeek$'
+pattern3 = r'.+beegeek.+'
+
+score = 0
+
+for line in map(str.rstrip, sys.stdin):
+    if re.fullmatch(pattern1, line):
+        score += 3
+    elif re.fullmatch(pattern2, line):
+        score += 2
+    elif re.fullmatch(pattern3, line):
+        score += 1
+
+print(score)
+'''
+
+
+# Флаги
+
+import re
+
+# Флаг re.IGNORECASE - игнорирование регистра
+'''
+match3 = re.search('a+', 'aaaAAA', re.IGNORECASE)
+match4 = re.search('A+', 'aaaAAA', re.I)
+print(match3)
+print(match4)
+'''
+
+# Флаг re.MULTILINE - учитывание символа \n внутри строки, при использовании ^ и $
+'''
+text = 'foo\nbar\nbaz'
+
+print("ПОИСК БЕЗ ФЛАГА")
+print(re.search('^foo', text))
+print(re.search('^bar', text))
+print(re.search('^baz', text))
+print(re.search('foo$', text))
+print(re.search('bar$', text))
+print(re.search('baz$', text))
+print()
+
+print("ПОИСК C ФЛАГОМ")
+print(re.search('^foo', text, re.MULTILINE))
+print(re.search('^bar', text, re.MULTILINE))
+print(re.search('^baz', text, re.MULTILINE))
+print(re.search('foo$', text, re.M))
+print(re.search('bar$', text, re.M))
+print(re.search('baz$', text, re.M))
+'''
+
+# Флаг re.DOTALL - включает символ переноса строки в то, что захватывает метасимвол .
+'''
+print(re.search('foo.bar', 'foo\nbar'))
+print(re.search('foo.bar', 'foo\nbar', re.DOTALL))
+print(re.search('foo.bar', 'foo\nbar', re.S))
+'''
+
+# Комбинирование флагов - |
+'''
+match = re.search('^bar', 'FOO\nBAR\nBAZ', re.I | re.M)
+print(match)
+'''
+
+# Функция escape() - получение строки с экранированием метасимволов
+'''
+match = re.escape('http://www.stepik.org')
+print(match)
+'''
+
+# Флаг verbose - добавление комментариев
+"""
+import re
+text = 'Десятичное число равно 123.7'
+match = re.search('''\d +  # целая часть
+                     \.    # десятичная точка
+                     \d *  # дробная часть''', text, re.VERBOSE)
+
+print(match)
+"""
+
+# Существуют и другие флаги
+
+
+# Уважение
+'''
+import re
+print(bool(re.match("^Здравствуйте|^Доброе утро|^Добрый день|^Добрый вечер", input(), re.IGNORECASE)))
+'''
+
+# Социальные сети = подсчёт beegeek без учёта регистра
+'''
+import re, sys
+
+pattern = r'.*beegeek.*'
+score = 0
+
+for line in map(str.rstrip, sys.stdin):
+    if re.search(pattern, line, re.IGNORECASE):
+        score += 1
+
+print(score)
+'''
+
+
 
