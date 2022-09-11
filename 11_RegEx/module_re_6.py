@@ -88,8 +88,100 @@ print(match1.group() if match1 else None)
 
 # Телефонные номера
 '''
-План:
+import sys
+import re
 
-Очевидно нужно использовать stdin
+pattern = r'\d{1,3}([- ])\d{1,3}\1\d{4,10}'
+
+results = []
+
+for line in sys.stdin:
+    line = line.strip()
+    res = re.search(pattern, line)
+
+    if res:
+        res = line[res.start():res.end()]
+        if " " in res:
+            res = res.split(" ")
+        else:
+            res = res.split("-")
+        results.append(res)
+
+for res in results:
+    print(f"Код страны: {res[0]}, Код города: {res[1]}, Номер: {res[2]}")
 '''
+
+# Более элегантный вариант. Использование именованных групп
+'''
+import re
+import sys
+
+pattern = r'(?P<country>\d{1,3})([ -]?)(?P<city>\d{1,3})\2(?P<number>\d{4,10})'
+
+for number in map(str.rstrip, sys.stdin):
+    match = re.fullmatch(pattern, number)
+    groups = match.groupdict()
+    print(f"Код страны: {groups['country']}, Код города: {groups['city']}, Номер: {groups['number']}")
+'''
+
+# Онлайн-школа BEEGEEK
+'''
+import re
+import sys
+
+pattern = r'_\d+[a-zA-Z]*_?'
+results = []
+
+for login in map(str.rstrip, sys.stdin):
+    match = re.fullmatch(pattern, login)
+    if match:
+        results.append(True)
+    else:
+        results.append(False)
+
+print(*results, sep='\n')
+'''
+
+# Одинаковые слоги
+'''
+import re
+import sys
+
+pattern = r'\b(\w+?)\1\b'
+results = []
+
+for word in map(str.rstrip, sys.stdin):
+    match = re.fullmatch(pattern, word)
+    if match:
+        results.append(word)
+
+print(*results, sep='\n')
+'''
+
+# Beegeek
+'''
+'''
+# Примечание 2. Строка может одновременно удовлетворять обеим условиям.
+
+import re
+import sys
+
+bee_str_pattern = r'.*bee.*bee.*'
+geek_str_pattern = r'\bgeek\b'
+
+stats = {"bee_str": 0, "geek_str": 0}
+
+
+for line in map(str.rstrip, sys.stdin):
+    match = re.search(geek_str_pattern, line)
+    if match:
+        stats["geek_str"] = stats["geek_str"] + 1
+
+    match = re.search(bee_str_pattern, line)
+    if match:
+        stats["bee_str"] = stats["bee_str"] + 1
+    
+
+print(stats["bee_str"])
+print(stats["geek_str"])
 
