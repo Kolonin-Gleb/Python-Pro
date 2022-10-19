@@ -115,3 +115,40 @@ def card_deck(suit: str):
                 yield f"{card} {mast}"
 '''
 
+# yield from (*iterable) - конструкция yiled from
+# совмещает в себе функционал yield и for
+# Удобно применять, для создания субгенераторов
+'''
+def is_digit_palindrome(digit: int):
+    digit = str(digit)
+
+    if digit[0::] == digit[::-1]:
+        return True
+    return False
+
+def palindromes():
+    cur_val = 1
+    while True:
+        if is_digit_palindrome(cur_val):
+            yield cur_val
+        cur_val += 1
+'''
+
+# Функция flatten
+'''
+def flatten(nested_lists: list):
+    for el_or_lst in nested_lists:
+        if type(el_or_lst) != list:
+            yield el_or_lst
+        else:
+            yield from flatten(el_or_lst)
+
+generator = flatten([[1, 2], [[3]], [[4], 5]])
+
+print(*generator)
+'''
+
+# 
+'''
+'''
+
