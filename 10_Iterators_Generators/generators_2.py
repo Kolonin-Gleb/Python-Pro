@@ -44,17 +44,47 @@ def cubes_of_odd(iterable):
             yield number ** 3
 '''
 
-
-# 
+# Генераторная функция
 '''
-'''
-
 def is_prime(n):
-  for i in range(2,n):
-    if (n%i) == 0:
-      return False
-  return True
+	if n == 1: return False
+
+	for i in range(2, n):
+		if n % i == 0:
+			return False
+	return True
+'''
+# Генераторное выражение в функции
+'''
+def is_prime(n):
+	return n != 1 and all(n % i != 0 for i in range(2, n))
+'''
+
+# Функция count_iterable()
+'''
+def count_iterable(iterable):
+	return sum(1 for _ in iterable)
+'''
+
+# Функция all_together()
+# генератор, порождающий каждый элемент всех переданных итерируемых объектов: сначала все элементы первого итерируемого объекта, затем второго, и так далее.
+'''
+def all_together(*args_iterables):
+	for iterable in args_iterables:
+		yield from iterable
+'''
+
+# Функция interleave()
+'''
+def interleave(*args):
+	zip_obj = zip(*args)
+	for els_from_iterables in zip_obj:
+		yield from els_from_iterables
 
 
-is_prime = (True if number % number == 0 and number % 1 == 0)
+numbers = [1, 2, 3]
+squares = [1, 4, 9]
+qubes = [1, 8, 27]
 
+print(*interleave(numbers, squares, qubes))
+'''
