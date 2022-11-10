@@ -96,12 +96,149 @@ def filter_names(names: list, ignore_char: str, max_names: int):
 # 4. Инвестиции
 # Общая сумма инвестиций в раунде а 
 '''
-'''
-
 with open('data.csv', 'r', encoding='utf-8') as file:
     file_lines = (line for line in file) # Сбор всех строк файла
     lines_values = (line.rstrip().split(',') for line in file_lines) # Выцепление значений из строк файла
     next(lines_values) # Пропуск строки заголовков
     total = (int(val[1]) for val in lines_values if val[2] == 'a')
     print(sum(total))
+'''
 
+# 5. years_days()
+# Генератор порождающий все даты в году от заданного года
+'''
+from datetime import date
+
+def years_days(year: int):
+    d = date(year=year, month=1, day=1)
+    while d.year == year:
+        yield d
+        d = date.fromordinal(d.toordinal() + 1) 
+'''
+
+# 6. nonempty_lines()
+# Вернуть генератор всех НЕПУСТЫХ строк файла без \n
+# Если строка > 25 - заменить ...
+'''
+def nonempty_lines(file: str):
+    with open(file, 'r', encoding='utf-8') as f:
+        # Чтение с обработкой всех строк
+        for line in f:
+            if line.strip() != '':
+                if len(line) > 25:
+                    yield '...'
+                else:
+                    yield line.rstrip()
+'''
+
+# 7. txt_to_dict()
+# Вернуть генератор, порождающий последовательность словарей
+'''
+def txt_to_dict():
+    with open('planets.txt', 'r', encoding='utf-8') as file:
+        planets = []
+        planet = dict()
+        file_lines = (line for line in file)
+        for line in file_lines:
+            if line.strip() != '':
+                key, val = line.split(' = ')
+                planet[key] = val.rstrip()
+            else:
+                planets.append(planet)
+                planet = dict()
+        yield from planets
+'''
+
+# Особенности итераторов range
+
+# Функция unique()
+# Вернуть генератор порождающий последовательность эл. итерируемого объекта
+# без дубликатов в исх. порядке
+'''
+def unique(iterable):
+    uniq = set()
+    for el in iterable:
+        if el not in uniq:
+            uniq.add(el)
+            yield el
+'''
+
+# Функция stop_on
+'''
+def stop_on(iterable: iter, obj):
+    for el in iterable:
+        if el != obj:
+            yield el
+        else: break
+        
+
+numbers = [1, 2, 3, 4, 5]
+print(*stop_on(numbers, 4))
+'''
+
+# Функция with_previous()
+'''
+def with_previous(iterable: iter):
+    previous = None
+    for el in iterable:
+        yield (el, previous)
+        previous = el
+'''
+# Функция pairwise()
+'''
+def pairwise(iterable):
+    iterable = iter(iterable)
+    current = None
+    following = None
+    try:
+        current = next(iterable)
+        following = next(iterable)
+        yield (current, following)
+        current = following
+    except StopIteration:
+        if not current:
+            return None
+        else:
+            yield (current, None)
+
+    try:
+        for el in iterable:
+            following = el
+            yield (current, following)
+            current = following
+    except StopIteration:
+        yield (current, None)
+    yield (current, None)
+'''
+
+# Функция around()
+'''
+def around(iterable):
+    iterable = iter(iterable)
+    previous = None
+    current = None
+    following = None
+    try:
+        current = next(iterable)
+        following = next(iterable)
+        yield (None, current, following)
+        previous = current
+        current = following
+    except StopIteration:
+        if not current:
+            return None
+        else:
+            yield (None, current, None)
+
+    try:
+        for el in iterable:
+            following = el
+            yield (previous, current, following)
+            previous = current
+            current = following
+    except StopIteration:
+        yield (previous, current, None)
+    yield (previous, current, None)
+'''
+
+# 
