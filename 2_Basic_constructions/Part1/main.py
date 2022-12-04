@@ -149,13 +149,17 @@ def spell(*args):
 
 # 13 get_biggest
 '''
+'''
+
 def get_biggest(numbers: list):
     if len(numbers) == 0:
         return -1
     # Сортирую список по убыванию 1ых цифр в числах
     # Соединяюю список в строку и перевожу её в int
 
-    numbers.sort(key=lambda num: str(num)[::], reverse=True)
+    numbers.sort(key=lambda num: str(num)[0:], reverse=True)
+    print(numbers)
+    
     numbers = [str(num) for num in numbers]
     biggest = ''.join(numbers)
     return int(biggest)
@@ -163,7 +167,3 @@ def get_biggest(numbers: list):
 print(get_biggest([7, 71, 72]))
 
 # в пятом тесте получается 0000... незначащие нули надо убирать.
-'''
-
-
-# Хочу в этой части решить ещё step 4 и step 6. Потом перейду к следующей части
