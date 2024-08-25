@@ -149,8 +149,6 @@ def spell(*args):
 
 # 13 get_biggest
 '''
-'''
-
 def get_biggest(numbers: list):
     if len(numbers) == 0:
         return -1
@@ -165,5 +163,50 @@ def get_biggest(numbers: list):
     return int(biggest)
 
 print(get_biggest([7, 71, 72]))
+'''
 
 # в пятом тесте получается 0000... незначащие нули надо убирать.
+
+# Step 14 Choose Plural
+'''
+def choose_plural(amount: int, declensions: tuple) -> str:
+    one, dual = amount % 10, amount % 100
+    if one == 1 and dual != 11:
+        return f'{amount} {declensions[0]}'
+    elif one in (2, 3, 4) and dual not in (12, 13, 14):
+        return f'{amount} {declensions[1]}'
+    return f'{amount} {declensions[2]}'
+'''
+
+# Step 15 get_biggest()
+"""
+Функция get_biggest()
+Реализуйте функцию get_biggest(), которая принимает один аргумент:
+numbers — список целых неотрицательных чисел
+Функция должна возвращать наибольшее число, которое можно составить из чисел из списка numbers. 
+Если список numbers пуст, функция должна вернуть число −1.
+
+Примечание 1. Рассмотрим первый тест со списком чисел [1, 2, 3], из которых можно составить следующие числа:
+123, 132, 213, 231, 312, 321
+Наибольшим из представленных является  321.
+
+[1, 2, 3, 4] -> 1234, 1243, 1324, 1342
+"""
+from functools import cmp_to_key
+# cmp_to_key - превращает функцию сравнения в key-функцию
+
+def compare_numbers(a: str, b: str) -> int:
+    # Функция сравнения для сортировки чисел посимвольно
+    return int(b + a) - int(a + b)
+
+
+def get_biggest(numbers: list) -> int:
+    if numbers:
+        num_lst = list(map(str, numbers))
+        num_lst.sort(key=cmp_to_key(compare_numbers))
+        return int(''.join(num_lst))
+    return -1
+
+
+
+

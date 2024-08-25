@@ -1,3 +1,11 @@
+# Step 1 Новый курс
+# Цель: посетить оба магазина и вернуться домой за минимум.
+'''
+d1 = int(input()) # от дома до 1ого магазина
+d2 = int(input()) # от дома до 2ого магазина
+d3 = int(input()) # дорога между магазинами 1 и 2
+'''
+
 # 2 Схожие буквы
 '''
 eng = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" # 1
@@ -132,3 +140,43 @@ for _ in range(int(input())):
     if [i for i, c in enumerate(word) if c in vowels] == pattern:
         print(word)
 '''
+
+# 8 Корпоративная почта
+'''
+import itertools
+
+used_emails = set()
+n = int(input()) # Кол. уже занятых почтовых ящиков
+for i in range(n):
+    used_emails.add(input())
+
+m = int(input()) # Кол. новых учеников
+students = []
+for i in range(m):
+    students.append(input())
+
+added_emails = [] # Для добавленных email-ов в порядке новых учеников
+
+# Пока всех учеников не добавили
+while len(added_emails) != len(students):
+    # Для каждого потенциально нового email создам генератор
+    for student in students:
+        generator = (str(n) for n in itertools.count(1))
+        # Пробуем добавить email без номера
+        email = student + '@beegeek.bzz'
+        if email not in used_emails:
+            used_emails.add(email)
+            added_emails.append(email)
+            continue
+        # Перебор email-ов до 1ого удачного добавления
+        while True:
+            email = student + next(generator) + '@beegeek.bzz'
+            if email not in used_emails:
+                used_emails.add(email)
+                added_emails.append(email)
+                break
+
+for added_email in added_emails:
+    print(added_email)
+'''
+
